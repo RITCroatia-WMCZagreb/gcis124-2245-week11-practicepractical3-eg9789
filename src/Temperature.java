@@ -25,6 +25,9 @@ public class Temperature {
         TemperatureScale f2C = null;
 
         // Delete from here
+        f2C=new TemperatureScale() {
+            
+        };
        
 
         
