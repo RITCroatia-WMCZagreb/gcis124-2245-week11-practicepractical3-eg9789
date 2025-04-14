@@ -1,17 +1,62 @@
+/*
+@ASSESSME.USERID: eg9789
+@ASSESSME.AUTHOR: Eldin Grebović
+@ASSESSME.DESCRIPTION: 
+@ASSESSME.ANALYZE: YES
+ */
 public class FunWithThreads1 {
 
 
     //Constructor of FunWithThreads
     public FunWithThreads1(){
         System.out.println("MAIN START");
+
+        Thread t1  = new Thread(new MyThread("1"));
+        Thread t2  = new Thread(new MyThread("2"));
+
+        
+        
+        t1.start();
+        t2.start();
+
+       
+
+      
+    
        
         System.out.println("MAIN END");
+        
+
     }
 
     public static void main(String[] args) throws Exception {
-        
         new FunWithThreads1();
+        
 
+
+    }
+
+    class MyThread implements Runnable{
+        private String name;
+
+        public MyThread(String name){
+            this.name = name;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            for(int i = 0; i<10; i++){
+                System.out.println("Thread " + name + " " + i);
+                
+
+            }
+        }
+        
     }
 
     /*

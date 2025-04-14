@@ -49,76 +49,103 @@ Note: There are only 5 threads (besides the main thread). You have the freedom
 to code this any way you want as long as the threads run concurrently.
 
 */
-
+/*
+@ASSESSME.USERID: eg9789
+@ASSESSME.AUTHOR: Eldin Grebović
+@ASSESSME.DESCRIPTION: 
+@ASSESSME.ANALYZE: YES
+ */
 import java.util.ArrayList;
 
 public class SimpleThreading {
 
-    private int counter = 90;
-    private Object lock = new Object();
+    private int counter;
+    private Object lock;
 
+   
     public SimpleThreading(){
-        ArrayList<Thread> threads = new ArrayList<Thread>();
+      this.counter=90;
+      this.lock= new Object();
 
-        for(int i=1;i<=5;i++){
-            Thread t = new Thread(new InnerThread(i));
-            t.start();//run the threads
-            threads.add(t);
-            /*try {
-                t.join();
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }//nono, do not call this here*/
-        }
+      
 
-        for(Thread t: threads){
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+      Thread t1 = new Thread(new MyThread("1"));
+      Thread t2 = new Thread(new MyThread("2"));
+      Thread t3 = new Thread(new MyThread("3"));
+      Thread t4 = new Thread(new MyThread("4"));
+      Thread t5 = new Thread(new MyThread("5"));
 
+      t5.start();
+      t4.start();
+      t3.start();
+      t2.start();
+      t1.start();
 
-        System.out.println("Main: at end counter = " + counter);
+      try {
+      t5.join();
+      t4.join();
+      t3.join();
+      t2.join();
+      t1.join();
+    } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
     }
+
+
+
+      
+
+
+
+      
+
+
+
+      System.out.println("Main: at end counter = " + counter);
+
+
+      
+
+    }
+
+
 
     public static void main(String[] args) {
         new SimpleThreading();
     }
 
+    public class MyThread implements Runnable{
+        private String name;
+        
 
-    class InnerThread implements Runnable{
-
-        private int name;
-        public InnerThread(int name){
+        public MyThread(String name) {
             this.name = name;
         }
 
+
         @Override
         public void run() {
-            for(int i=0;i<10;i++){
-
-              
-
-                synchronized(lock){
-                    if(counter<=0) break;
-                    counter = counter -3;
-                    System.out.println("Thread " + name + " counter " + counter);
-                }
+            while (counter!=0) {
                 
+            
+            synchronized(lock){
+                counter-=3;
+                System.out.println("Thread " + name + " counter "+ counter);
 
-                try {
-                    Thread.sleep(2);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
             }
+
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
         }
-        
+        }
+
     }
+    
     
 }
